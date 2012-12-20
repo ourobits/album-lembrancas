@@ -1,4 +1,4 @@
-album-fotos-pessoal
+album-lembrancas
 ===================
 
-Ferramenta para arquivar suas fotos pessoais, bem como visualizar,buscar,agrupar em categorias etc
+Ferramenta para arquivar suas fotos,videos... pessoais, bem como visualizar,buscar,agrupar em categorias etc
