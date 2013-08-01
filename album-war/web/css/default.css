@@ -1,0 +1,40 @@
+/* 
+    Document   : default
+    Created on : 29/07/2013, 17:08:51
+    Author     : jacoboliveira
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body{
+	font-family:Arial, Helvetica, sans-serif;	
+	font-size: 12px;
+	background-color:#89BFEB
+}
+.caixa-azul{
+	border:1px solid #2475CE;
+	background-color:#FFF;	
+	padding: 7px 5px 0 5px	
+}
+.ui-menu { width: 150px; }
+
+ul#menu{
+	border:1px solid #2475CE;	
+}
+.painel-menu-esq{
+    float:left;
+    margin-top:10px
+}
+
+.titulo{
+    float:left;font-size:14px;font-weight:bold
+}
+
+.login{
+    float:right
+}
+
+.conteudo-centro{
+    margin: 10px 0 0 180px;padding: 5px
+}
+
