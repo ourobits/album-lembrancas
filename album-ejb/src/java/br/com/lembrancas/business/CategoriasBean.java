@@ -43,6 +43,17 @@ public class CategoriasBean implements CategoriasBeanLocal {
 
         return BeanHelper.copyProps(categorias, categoriasDto);
     }
+    
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public CategoriasDto alterar(CategoriasDto categoriasDto) throws Exception {
+        Categorias categorias = BeanHelper
+                .copyProps(categoriasDto, categoriasDao.findById(categoriasDto.getId()));
+        categorias.setDataAtualizacao(new Date(System.currentTimeMillis()));
+
+        categoriasDao.update(categorias);
+
+        return BeanHelper.copyProps(categorias, categoriasDto);
+    }
 
     public CategoriasDto findById(Long id) throws Exception {
         return BeanHelper.copyProps(categoriasDao.findById(id), new CategoriasDto());

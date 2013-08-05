@@ -17,6 +17,8 @@ public interface CategoriasBeanLocal {
 
     public CategoriasDto salvar(CategoriasDto categoriasDto) throws Exception;
     
+    public CategoriasDto alterar(CategoriasDto categoriasDto) throws Exception;
+    
     public CategoriasDto excluir(CategoriasDto categoriasDto) throws Exception;
     
     public CategoriasDto findById(Long id) throws Exception;
