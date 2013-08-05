@@ -21,6 +21,12 @@
         <managed-bean-class>br.com.lembrancas.dto.CategoriasDto</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>lembrancasDto</managed-bean-name>
+        <managed-bean-class>br.com.lembrancas.dto.LembrancasDto</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
     <navigation-rule>
         <from-view-id>/*</from-view-id>
         <navigation-case>
@@ -32,4 +38,9 @@
     <lifecycle>
         <phase-listener>br.com.lembrancas.web.faces.MultiPageMessagesSupport</phase-listener>
     </lifecycle>
+    <managed-bean>
+        <managed-bean-name>lembrancasPage</managed-bean-name>
+        <managed-bean-class>br.com.lembrancas.web.LembrancasPage</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>

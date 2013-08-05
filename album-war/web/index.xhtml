@@ -10,12 +10,33 @@
     </ui:define>
 
     <ui:define name="conteudo">
-        Bem-vindo
-        
+        <div align="right">
+            <p:commandButton value="Adic. Lembrança"/>
+        </div>
     </ui:define>
 
     <ui:define name="extras">
-        
+        <p:dialog id="modalDialog" header="Categoria" 
+                  widgetVar="dlg_lembranca"                   
+                  closable="false"   
+                  visible="#{homePage.visibleDialog}"
+                  modal="true" height="340" width="370">
+            <p:messages id="msg" redisplay="true" />
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Titulo"/>
+                <h:inputText id="titulo" style="width: 270px" value="#{lembrancasDto.titulo}" />
+                <h:outputLabel value="Descrição"/>
+                <h:inputTextarea id="descricao" value="#{lembrancasDto.descricao}" style="width: 270px;height: 200px" />
+                <h:outputLabel value=""/>
+                <h:panelGrid columns="2">
+                    <p:commandButton value="Salvar"                                         
+                                     oncomplete="verificarCampos(xhr, status, args)"
+                                     update="msg,categorias,msg2"  actionListener="#{lembrancasPage.salvar()}"/>
+
+                    <p:commandButton ajax="false" actionListener="#{homePage.hideDialog()}" value="Fechar"/>
+                </h:panelGrid>                
+            </h:panelGrid> 
+        </p:dialog>
     </ui:define>
 
 </ui:composition>

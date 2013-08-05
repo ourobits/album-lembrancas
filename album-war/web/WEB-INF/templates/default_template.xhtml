@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -20,6 +21,13 @@
                 }
                 
             }
+            
+            function setCamposCategorias(xhr, status, args){
+                var form = document.getElementById("formCategoria");
+                form["formCategorias:titulo"].value=args.titulo;
+                form["formCategorias:descricao"].value=args.descricao;
+                alert("sds");
+            }
         </script>  
     </h:head>
 
@@ -32,10 +40,10 @@
         <h:form id="formCategoria">
             <div class="painel-menu-esq" >
                 <div>
-                    <p:commandButton value="+" actionListener="#{homePage.novo()}" onclick="dlg_categoria.show()"/>
-                    <p:commandButton value="[-]"/>
+                    <p:commandButton ajax="false" value="+" action="#{homePage.novo()}" />
+                    <p:commandButton ajax="false" value="[-]" actionListener="#{homePage.alterarCategoria()}"/>
                     <p:commandButton  value="-" onclick="confirmExcluir.show()"  >
-                        
+
                     </p:commandButton>                    
                 </div>
                 <table>
@@ -61,7 +69,8 @@
             <ui:insert name="extras"></ui:insert>
             <p:dialog id="modalDialog" header="Categoria" 
                       widgetVar="dlg_categoria"                   
-                      closable="false"                       
+                      closable="false"   
+                      visible="#{homePage.visibleDialog}"
                       modal="true" height="340" width="370">  
 
                 <p:messages id="msg" redisplay="true" />
@@ -72,10 +81,20 @@
                     <h:inputTextarea id="descricao" value="#{categoriasDto.descricao}" style="width: 270px;height: 200px" />
                     <h:outputLabel value=""/>
                     <h:panelGrid columns="2">
-                        <p:commandButton value="Salvar" 
-                                         oncomplete="verificarCampos(xhr, status, args)"
-                                         update="msg,categorias,msg2"  actionListener="#{homePage.salvar()}"/>
-                        <p:commandButton type="button" onclick="dlg_categoria.hide()" value="Fechar"/>
+                        <c:choose>
+                            <c:when test="${homePage.visivelAlterar}">
+                                <p:commandButton value="Alterar"                                         
+                                                 oncomplete="verificarCampos(xhr, status, args)"
+                                                 update="msg,categorias,msg2"  actionListener="#{homePage.alterar()}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <p:commandButton value="Salvar"                                         
+                                                 oncomplete="verificarCampos(xhr, status, args)"
+                                                 update="msg,categorias,msg2"  actionListener="#{homePage.salvar()}"/>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <p:commandButton ajax="false" actionListener="#{homePage.hideDialog()}" value="Fechar"/>
                     </h:panelGrid>                
                 </h:panelGrid> 
             </p:dialog> 

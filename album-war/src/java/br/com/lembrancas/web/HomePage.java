@@ -11,11 +11,11 @@ import br.com.lembrancas.web.exceptions.TratamentoException;
 import br.com.lembrancas.web.faces.FacesBean;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-import org.primefaces.context.DefaultRequestContext;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -30,6 +30,27 @@ public class HomePage extends FacesBean {
     ManagerAnnotationDto managerAnnotationDto;
     SelectItem[] categorias;
     CategoriasDto categoriasDto;
+    boolean visibleDialog,visivelAlterar;
+
+    public boolean isVisivelAlterar() {
+        return visivelAlterar;
+    }
+
+    public void setVisivelAlterar(boolean visivelAlterar) {
+        this.visivelAlterar = visivelAlterar;
+    }
+
+    public void showDialog() {
+        visibleDialog = true;
+    }
+
+    public void hideDialog() {
+        visibleDialog = false;
+    }
+
+    public boolean getVisibleDialog() {
+        return visibleDialog;
+    }
 
     public SelectItem[] getCategorias() {
         try {
@@ -46,8 +67,11 @@ public class HomePage extends FacesBean {
         return categorias;
     }
 
-    public void novo() {
+    public String novo() {
+        setVisivelAlterar(false);
         setBean("CategoriasDto", new CategoriasDto());
+        showDialog();
+        return "home";
     }
 
     public void salvar() {
@@ -57,6 +81,7 @@ public class HomePage extends FacesBean {
             CategoriasDto categoriaDto = getCategoriasDto();
             managerAnnotationDto.analizarCamposObrigatorios(categoriaDto);
             categoriasBeanLocal.salvar(categoriaDto);
+            hideDialog();
             setBean("CategoriasDto", new CategoriasDto());
             info("Categoria inserida com sucesso!");
             result = true;
@@ -66,11 +91,44 @@ public class HomePage extends FacesBean {
         }
         requestContext.addCallbackParam("resultado", result);
     }
-
-    public void alterarCategoria(){
-     
-    }
     
+    public void alterar() {
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        boolean result = false;
+        try {
+            CategoriasDto categoriaDto = getCategoriasDto();
+            categoriaDto.setId(categoriasDto.getId());
+            managerAnnotationDto.analizarCamposObrigatorios(categoriaDto);
+            categoriasBeanLocal.alterar(categoriaDto);
+            hideDialog();
+            setBean("CategoriasDto", new CategoriasDto());
+            info("Categoria alterada com sucesso!");
+            result = true;
+        } catch (Exception ex) {
+            tratamentoException.tratar(ex);
+            result = false;
+        }
+        requestContext.addCallbackParam("resultado", result);
+    }
+
+    public void alterarCategoria() {
+        Map<String,String> m = getExternalContext().getRequestParameterMap();
+        Object itemSelecionado = m.get("formCategoria:categorias_input");
+        if (itemSelecionado == null) {
+            warn("Selecione uma categoria!");
+            return;
+        }
+        Long id = Long.valueOf(itemSelecionado.toString());
+        try {
+            this.categoriasDto = categoriasBeanLocal.findById(id);
+        } catch (Exception ex) {
+            tratamentoException.tratar(ex);
+        }
+        setVisivelAlterar(true);
+        setBean("categoriasDto", categoriasDto);
+        showDialog();
+    }
+
     public void excluir() {
         try {
             if (categoriasDto != null) {
